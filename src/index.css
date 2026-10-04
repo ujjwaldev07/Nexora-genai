@@ -1,0 +1,490 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+:root {
+  --arc-duration-left-outer: 24s;
+  --arc-duration-left-glow: 18s;
+  --arc-duration-left-haze: 32s;
+  --arc-duration-right-outer: 30s;
+  --arc-duration-right-glow: 22s;
+  --arc-duration-right-haze: 36s;
+  --atmosphere-breathe-duration: 26s;
+  --light-sweep-duration: 24s;
+  --arc-easing: cubic-bezier(0.42, 0, 0.58, 1);
+  --mouse-x: 0px;
+  --mouse-y: 0px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    overscroll-behavior-y: none;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.25) transparent;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.2);
+    border-radius: 9999px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 163, 175, 0.4);
+  }
+
+  /* Focus visible accessibility outline */
+  :focus-visible {
+    outline: 2px solid rgba(99, 102, 241, 0.6);
+    outline-offset: 2px;
+  }
+}
+
+/* Prism syntax highlighting token colors */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #64748b;
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: #94a3b8;
+}
+
+.token.namespace {
+  opacity: 0.7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #f43f5e;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #10b981;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #38bdf8;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #818cf8;
+}
+
+.token.function,
+.token.class-name {
+  color: #fbbf24;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #f97316;
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+/* KaTeX formula readability adjustments */
+.katex-display {
+  margin: 1em 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5em 0;
+}
+
+.katex {
+  font-size: 1.05em;
+  text-rendering: auto;
+}
+
+@keyframes fadeInFast {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* Ambient Floating Background Orbs Animations (GPU-composited via translate3d/scale) */
+@keyframes ambientFloat1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(35px, -30px, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes ambientFloat2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(-40px, 25px, 0) scale(0.95);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+}
+
+@keyframes ambientFloat3 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.95);
+  }
+  50% {
+    transform: translate3d(25px, 35px, 0) scale(1.1);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.95);
+  }
+}
+
+@keyframes lightSweep {
+  0% {
+    transform: translate3d(-100%, 0, 0) skewX(-15deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.08;
+  }
+  80% {
+    opacity: 0.08;
+  }
+  100% {
+    transform: translate3d(200%, 0, 0) skewX(-15deg);
+    opacity: 0;
+  }
+}
+
+.animate-light-sweep {
+  animation: lightSweep var(--light-sweep-duration, 24s) var(--arc-easing, cubic-bezier(0.42, 0, 0.58, 1)) infinite;
+  will-change: transform, opacity;
+}
+
+.animate-fade-in {
+  animation: fadeInFast 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.animate-ambient-1 {
+  animation: ambientFloat1 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-2 {
+  animation: ambientFloat2 24s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-3 {
+  animation: ambientFloat3 20s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Glassmorphism Surface Helpers */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.dark .glass-panel {
+  background: rgba(12, 12, 20, 0.72);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(139, 92, 246, 0.12);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.glass-composer {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.06), 0 0 1px 1px rgba(0, 0, 0, 0.02);
+}
+
+.dark .glass-composer {
+  background: rgba(10, 10, 18, 0.75);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(139, 92, 246, 0.22);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 35px -5px rgba(99, 102, 241, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Atmospheric Planetary Arcs - Multi-layered Asynchronous Motion */
+@keyframes arcDriftLeftOuter {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    opacity: 0.82;
+  }
+  33% {
+    transform: translate3d(-18px, 16px, 0) scale(1.03) rotate(1.2deg);
+    opacity: 0.94;
+  }
+  66% {
+    transform: translate3d(-8px, -12px, 0) scale(0.98) rotate(-0.8deg);
+    opacity: 0.78;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    opacity: 0.82;
+  }
+}
+
+@keyframes arcDriftLeftGlow {
+  0% {
+    transform: scale(1) translate3d(0, 0, 0);
+    opacity: 0.75;
+  }
+  50% {
+    transform: scale(1.08) translate3d(-12px, 8px, 0);
+    opacity: 0.92;
+  }
+  100% {
+    transform: scale(1) translate3d(0, 0, 0);
+    opacity: 0.75;
+  }
+}
+
+@keyframes arcDriftLeftHaze {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.97);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(14px, -18px, 0) scale(1.06);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.97);
+    opacity: 0.55;
+  }
+}
+
+@keyframes arcDriftRightOuter {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    opacity: 0.78;
+  }
+  40% {
+    transform: translate3d(22px, -20px, 0) scale(1.05) rotate(-1.8deg);
+    opacity: 0.92;
+  }
+  75% {
+    transform: translate3d(10px, 14px, 0) scale(0.96) rotate(1.1deg);
+    opacity: 0.72;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    opacity: 0.78;
+  }
+}
+
+@keyframes arcDriftRightGlow {
+  0% {
+    transform: scale(1) translate3d(0, 0, 0);
+    opacity: 0.70;
+  }
+  50% {
+    transform: scale(1.1) translate3d(16px, -10px, 0);
+    opacity: 0.88;
+  }
+  100% {
+    transform: scale(1) translate3d(0, 0, 0);
+    opacity: 0.70;
+  }
+}
+
+@keyframes arcDriftRightHaze {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.98);
+    opacity: 0.50;
+  }
+  50% {
+    transform: translate3d(-18px, 16px, 0) scale(1.07);
+    opacity: 0.72;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.98);
+    opacity: 0.50;
+  }
+}
+
+/* Light Pulse Traveling along Arc Curvatures */
+@keyframes arcLightTravelLeft {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  15% {
+    opacity: 0.95;
+    transform: scale(1.2);
+  }
+  85% {
+    opacity: 0.95;
+    transform: scale(1.1);
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+@keyframes arcLightTravelRight {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  20% {
+    opacity: 0.9;
+    transform: scale(1.15);
+  }
+  80% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+/* Global Atmosphere Breathing */
+@keyframes atmosphereBreathe {
+  0%, 100% {
+    transform: scale(1.0);
+    opacity: 0.92;
+  }
+  50% {
+    transform: scale(1.018);
+    opacity: 1.0;
+  }
+}
+
+.animate-arc-left-outer {
+  animation: arcDriftLeftOuter var(--arc-duration-left-outer, 24s) var(--arc-easing, cubic-bezier(0.42, 0, 0.58, 1)) infinite;
+  will-change: transform, opacity;
+}
+
+.animate-arc-left-glow {
+  animation: arcDriftLeftGlow var(--arc-duration-left-glow, 18s) var(--arc-easing, cubic-bezier(0.42, 0, 0.58, 1)) infinite;
+  will-change: transform, opacity;
+}
+
+.animate-arc-left-haze {
+  animation: arcDriftLeftHaze var(--arc-duration-left-haze, 32s) var(--arc-easing, cubic-bezier(0.42, 0, 0.58, 1)) infinite;
+  will-change: transform, opacity;
+}
+
+.animate-arc-right-outer {
+  animation: arcDriftRightOuter var(--arc-duration-right-outer, 30s) var(--arc-easing, cubic-bezier(0.42, 0, 0.58, 1)) infinite;
+  will-change: transform, opacity;
+}
+
+.animate-arc-right-glow {
+  animation: arcDriftRightGlow var(--arc-duration-right-glow, 22s) var(--arc-easing, cubic-bezier(0.42, 0, 0.58, 1)) infinite;
+  will-change: transform, opacity;
+}
+
+.animate-arc-right-haze {
+  animation: arcDriftRightHaze var(--arc-duration-right-haze, 36s) var(--arc-easing, cubic-bezier(0.42, 0, 0.58, 1)) infinite;
+  will-change: transform, opacity;
+}
+
+.animate-atmosphere-breathe {
+  animation: atmosphereBreathe var(--atmosphere-breathe-duration, 26s) var(--arc-easing, cubic-bezier(0.42, 0, 0.58, 1)) infinite;
+  will-change: transform, opacity;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-ambient-1,
+  .animate-ambient-2,
+  .animate-ambient-3,
+  .animate-arc-left-outer,
+  .animate-arc-left-glow,
+  .animate-arc-left-haze,
+  .animate-arc-right-outer,
+  .animate-arc-right-glow,
+  .animate-arc-right-haze,
+  .animate-atmosphere-breathe,
+  .animate-light-sweep {
+    animation: none !important;
+    transform: none !important;
+  }
+}

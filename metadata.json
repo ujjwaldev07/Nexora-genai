@@ -1,0 +1,6 @@
+{
+  "name": "Nexora AI",
+  "description": "High-performance, enterprise-grade AI intelligence workspace with real-time Gemini Live voice conversations, multimodal chat, image generation & editing, quantitative data studio, interactive KPI dashboards, document RAG, and local-first persistence.",
+  "requestFramePermissions": ["microphone", "camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
